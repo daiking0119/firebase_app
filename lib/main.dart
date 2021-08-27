@@ -1,40 +1,39 @@
-import 'package:firebase_app/main_model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() => runApp(MyApp());
+import 'main_model.dart';
 
-class MyApp extends StatelessWidget {
+void main() {
+  runApp(
+    ProviderScope(
+      child: MaterialApp(
+        title: 'riverpod',
+        home: TemplatePage(),
+      ),
+    ),
+  );
+}
+
+class TemplatePage extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      home: ChangeNotifierProvider<MainModel>(
-        create: (_) => MainModel(),
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text('プロバイダー'),
-          ),
-          body: Consumer<MainModel>(builder: (context, model, child) {
-            return Center(
-              child: Column(
-                children: [
-                  Text(
-                    model.kboyText,
-                    style: TextStyle(
-                      fontSize: 30,
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      model.changeKboyText();
-                    },
-                    child: Text('ボタン'),
-                  ),
-                ],
-              ),
-            );
-          }),
+  Widget build(BuildContext context, ScopedReader watch) {
+    final provider = watch(templateProvider).state;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('リバーポッド'),
+      ),
+      body: Container(
+        child: Column(
+          children: [
+            Text(provider),
+            ElevatedButton(
+              onPressed: () {
+                context.read(templateProvider).state = 'ボタンが押されたぜ！';
+              },
+              child: Text('ボタン'),
+            )
+          ],
         ),
       ),
     );

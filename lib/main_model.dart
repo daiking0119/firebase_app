@@ -1,10 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MainModel extends ChangeNotifier {
-  String kboyText = 'ボタンを押せ';
-
-  void changeKboyText() {
-    kboyText = 'ボタンが押されたぜ！';
-    notifyListeners();
-  }
-}
+dynamic templateProvider = StateProvider(
+  (ref) {
+    return 'ボタンを押せ';
+  },
+);
